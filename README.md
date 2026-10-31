@@ -22,11 +22,20 @@ npm run preview
 
 官网的联系表单用 [Web3Forms](https://web3forms.com/) 接收，不需要后端，也不会在页面上暴露邮箱。
 
-1. 打开 https://web3forms.com/，输入你的邮箱，点击获取 Access Key（免费，每月 250 次提交）
-2. 把 `src/App.vue` 里的 `YOUR_WEB3FORMS_ACCESS_KEY` 替换成拿到的 Access Key
-3. 提交 `git push` 后，访客填写的表单会直接发到该邮箱
+- Access Key 已配置在 `src/App.vue` 的 `ACCESS_KEY`
+- 访客提交后，内容会发到对应邮箱，免费额度每月 250 次
+- 域名白名单（Allowed Domains）是 Web3Forms 的 Pro 付费功能，免费版没有；若被滥用，可在后台重新生成 Key 再替换
 
-建议登录 Web3Forms 后台，把允许提交的域名限制为 `www.hslog.cn`，防止 key 被别的网站滥用。
+## AI 客服
+
+右下角悬浮聊天按钮，内容通过 iframe 嵌入第三方 AI 客服平台。
+
+1. 在 Coze / FastGPT / Dify 建好知识库机器人
+2. 拿到网页嵌入链接
+3. 填到 `src/App.vue` 的 `CHAT_EMBED_URL`
+4. `git push` 后生效
+
+未填地址时，面板显示"AI 客服正在接入中"，并引导访客填写联系表单。
 
 ## 需要替换的内容
 
