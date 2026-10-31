@@ -303,7 +303,7 @@ const year = new Date().getFullYear()
 
 /* ---------- 联系表单 ---------- */
 // 替换成你在 https://web3forms.com/ 用邮箱换到的 Access Key
-const ACCESS_KEY = 'YOUR_WEB3FORMS_ACCESS_KEY'
+const ACCESS_KEY = 'a98cb677-0e9d-46c1-a293-cc38df08f7c9'
 
 const form = ref({ name: '', contact: '', message: '' })
 const status = ref('idle')
