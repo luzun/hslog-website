@@ -301,6 +301,14 @@ const advantages = [
 const icp = '冀ICP备2021003265号'
 const year = new Date().getFullYear()
 
+/* ---------- AI 客服 ---------- */
+// 填入 AI 客服平台的嵌入地址（Coze / FastGPT / Dify 的网页嵌入链接）
+const CHAT_EMBED_URL = ''
+const chatOpen = ref(false)
+const closeChat = () => {
+  chatOpen.value = false
+}
+
 /* ---------- 联系表单 ---------- */
 // 替换成你在 https://web3forms.com/ 用邮箱换到的 Access Key
 const ACCESS_KEY = 'a98cb677-0e9d-46c1-a293-cc38df08f7c9'
@@ -600,4 +608,58 @@ async function submitForm() {
       <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">{{ icp }}</a>
     </div>
   </footer>
+
+  <!-- AI 客服 -->
+  <div class="chat" :class="{ 'chat--open': chatOpen }">
+    <transition name="chat-pop">
+      <div v-if="chatOpen" class="chat__panel">
+        <div class="chat__head">
+          <span>AI 客服</span>
+          <button type="button" aria-label="关闭" @click="closeChat">×</button>
+        </div>
+        <iframe
+          v-if="CHAT_EMBED_URL"
+          class="chat__frame"
+          :src="CHAT_EMBED_URL"
+          title="AI 客服"
+          allow="microphone"
+        ></iframe>
+        <div v-else class="chat__empty">
+          <p>AI 客服正在接入中</p>
+          <p>急事可以先<a href="#contact">填写联系表单</a></p>
+        </div>
+      </div>
+    </transition>
+
+    <button
+      class="chat__fab"
+      type="button"
+      :aria-label="chatOpen ? '关闭 AI 客服' : '打开 AI 客服'"
+      @click="chatOpen = !chatOpen"
+    >
+      <svg
+        v-if="!chatOpen"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.8"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path
+          d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"
+        />
+      </svg>
+      <svg
+        v-else
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+      >
+        <path d="M6 6l12 12M18 6L6 18" />
+      </svg>
+    </button>
+  </div>
 </template>
