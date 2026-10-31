@@ -823,6 +823,118 @@ ul {
   font-size: 14.5px;
 }
 
+/* ---------- 联系 ---------- */
+.contact {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: start;
+}
+
+.contact__notes {
+  display: grid;
+  gap: 12px;
+  margin-top: 26px;
+}
+
+.contact__notes li {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  font-size: 14.5px;
+  color: var(--muted);
+}
+
+.contact__notes li::before {
+  content: '→';
+  color: var(--primary);
+  font-size: 13px;
+}
+
+.contact-form {
+  display: grid;
+  gap: 18px;
+  padding: 30px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--card);
+}
+
+.field {
+  display: grid;
+  gap: 8px;
+}
+
+.field label {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.field input,
+.field textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text);
+  font-size: 15px;
+  font-family: inherit;
+  line-height: 1.6;
+  outline: none;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.field input::placeholder,
+.field textarea::placeholder {
+  color: rgba(147, 164, 189, 0.6);
+}
+
+.field input:focus,
+.field textarea:focus {
+  border-color: var(--primary);
+  background: rgba(79, 140, 255, 0.05);
+  box-shadow: 0 0 0 3px rgba(79, 140, 255, 0.15);
+}
+
+.field textarea {
+  resize: vertical;
+  min-height: 110px;
+}
+
+.honeypot {
+  position: absolute;
+  left: -9999px;
+  width: 0;
+  height: 0;
+  opacity: 0;
+}
+
+.contact-form__submit {
+  justify-self: start;
+}
+
+.contact-form__submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.form-note {
+  margin: 0;
+  font-size: 14px;
+}
+
+.form-note--ok {
+  color: #38d39f;
+}
+
+.form-note--err {
+  color: #ff7a7a;
+}
+
 /* ---------- 页脚 ---------- */
 .footer {
   border-top: 1px solid var(--border);
@@ -877,6 +989,11 @@ ul {
 
   .why {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .contact {
+    grid-template-columns: 1fr;
+    gap: 40px;
   }
 }
 

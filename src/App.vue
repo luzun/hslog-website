@@ -211,6 +211,7 @@ const nav = [
   { label: '业务范围', href: '#services' },
   { label: '技术能力', href: '#tech' },
   { label: '为什么选择我们', href: '#why' },
+  { label: '联系我们', href: '#contact' },
 ]
 
 const stats = [
@@ -299,6 +300,42 @@ const advantages = [
 
 const icp = '冀ICP备2021003265号'
 const year = new Date().getFullYear()
+
+/* ---------- 联系表单 ---------- */
+// 替换成你在 https://web3forms.com/ 用邮箱换到的 Access Key
+const ACCESS_KEY = 'YOUR_WEB3FORMS_ACCESS_KEY'
+
+const form = ref({ name: '', contact: '', message: '' })
+const status = ref('idle')
+
+async function submitForm() {
+  if (!form.value.name.trim() || !form.value.contact.trim()) return
+  status.value = 'sending'
+  try {
+    const res = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({
+        access_key: ACCESS_KEY,
+        subject: `官网联系表单 - ${form.value.name}`,
+        from_name: '洛格科技官网',
+        name: form.value.name,
+        contact: form.value.contact,
+        message: form.value.message,
+        botcheck: '',
+      }),
+    })
+    const data = await res.json()
+    if (data.success) {
+      status.value = 'success'
+      form.value = { name: '', contact: '', message: '' }
+    } else {
+      status.value = 'error'
+    }
+  } catch {
+    status.value = 'error'
+  }
+}
 </script>
 
 <template>
@@ -485,6 +522,74 @@ const year = new Date().getFullYear()
             <p>{{ a.desc }}</p>
           </div>
         </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="section">
+      <div class="container contact">
+        <div class="contact__copy reveal">
+          <p class="eyebrow">联系我们</p>
+          <h2 class="section__title">说说你的项目</h2>
+          <p class="section__lead">
+            留下联系方式，我们会尽快联系你。你的信息只用于回复，不会在网站上公开。
+          </p>
+          <ul class="contact__notes">
+            <li>需求说个大概就行，不用准备正式文档</li>
+            <li>信息仅用于本次沟通，不会用于营销或转给第三方</li>
+          </ul>
+        </div>
+
+        <form class="contact-form reveal" style="--delay: 120ms" @submit.prevent="submitForm">
+          <div class="field">
+            <label for="name">称呼</label>
+            <input
+              id="name"
+              v-model="form.name"
+              type="text"
+              required
+              maxlength="50"
+              placeholder="怎么称呼你"
+            />
+          </div>
+          <div class="field">
+            <label for="contact">联系方式</label>
+            <input
+              id="contact"
+              v-model="form.contact"
+              type="text"
+              required
+              maxlength="100"
+              placeholder="手机 / 微信 / 邮箱"
+            />
+          </div>
+          <div class="field">
+            <label for="message">需求描述</label>
+            <textarea
+              id="message"
+              v-model="form.message"
+              rows="4"
+              maxlength="1000"
+              placeholder="想做什么、大概预算、期望上线时间……简单说说就行"
+            ></textarea>
+          </div>
+          <input type="checkbox" name="botcheck" class="honeypot" tabindex="-1" autocomplete="off" />
+
+          <button
+            class="btn btn--primary contact-form__submit"
+            type="submit"
+            :disabled="status === 'sending'"
+          >
+            {{ status === 'sending' ? '发送中…' : '提交需求' }}
+          </button>
+
+          <p v-if="status === 'success'" class="form-note form-note--ok">
+            已收到，我们会尽快联系你。
+          </p>
+          <p v-if="status === 'error'" class="form-note form-note--err">
+            提交失败，请稍后再试。
+          </p>
+        </form>
       </div>
     </section>
   </main>

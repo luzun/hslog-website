@@ -18,6 +18,16 @@ npm run preview
 
 构建产物在 `dist/`。
 
+## 联系表单配置（Web3Forms）
+
+官网的联系表单用 [Web3Forms](https://web3forms.com/) 接收，不需要后端，也不会在页面上暴露邮箱。
+
+1. 打开 https://web3forms.com/，输入你的邮箱，点击获取 Access Key（免费，每月 250 次提交）
+2. 把 `src/App.vue` 里的 `YOUR_WEB3FORMS_ACCESS_KEY` 替换成拿到的 Access Key
+3. 提交 `git push` 后，访客填写的表单会直接发到该邮箱
+
+建议登录 Web3Forms 后台，把允许提交的域名限制为 `www.hslog.cn`，防止 key 被别的网站滥用。
+
 ## 需要替换的内容
 
 上线前请把下面这些占位信息换成真实信息：
