@@ -1,0 +1,22 @@
+{
+  "name": "hslog-website",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "衡水洛格科技有限公司官网",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "vue": "^3.5.13"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.2.1",
+    "vite": "^6.0.7"
+  },
+  "overrides": {
+    "rollup": "npm:@rollup/wasm-node@^4.24.0"
+  }
+}
