@@ -203,12 +203,13 @@ const company = {
   short: '洛格科技',
   slogan: '让软件真正服务于业务',
   intro:
-    '衡水洛格科技有限公司专注软件定制开发与企业数字化服务。从企业建站、业务系统开发，到云部署与长期技术运维，我们提供覆盖产品全生命周期的技术服务，帮助中小企业把想法落地成可运行、可维护的产品。',
+    '衡水洛格科技有限公司专注软件定制开发、企业建站与 AI 应用落地。从企业官网、业务系统，到 AI 知识库、内容生成与模型私有化部署，我们提供覆盖产品全生命周期的技术服务，帮助中小企业把想法落地成可运行、可维护的产品。',
 }
 
 const nav = [
   { label: '关于我们', href: '#about' },
   { label: '业务范围', href: '#services' },
+  { label: 'AI 落地', href: '#ai' },
   { label: '技术能力', href: '#tech' },
   { label: '为什么选择我们', href: '#why' },
   { label: '联系我们', href: '#contact' },
@@ -217,7 +218,7 @@ const nav = [
 const stats = [
   { value: '一站式', label: '建站到运维' },
   { value: '全栈', label: '前端到后端' },
-  { value: '长期', label: '持续维护迭代' },
+  { value: 'AI 落地', label: '场景化部署' },
 ]
 
 const services = [
@@ -240,6 +241,45 @@ const services = [
     title: '企业数字化',
     desc: '进销存、OA、CRM 等信息化系统建设，让流程、数据与团队高效协同。',
     paths: ['M3 3v18h18', 'M18 17V9', 'M13 17V5', 'M8 17v-3'],
+  },
+  {
+    title: 'AI 知识库与智能客服',
+    desc: '把产品手册、业务资料变成 7×24 小时应答的智能客服与内部知识库。',
+    paths: [
+      'M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z',
+      'M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z',
+    ],
+  },
+  {
+    title: 'AI 内容生成',
+    desc: '文案、图片与短视频批量生成，降低营销与素材的生产成本。',
+    paths: [
+      'M12 3l1.9 5.8a2 2 0 0 0 1.3 1.3L21 12l-5.8 1.9a2 2 0 0 0-1.3 1.3L12 21l-1.9-5.8a2 2 0 0 0-1.3-1.3L3 12l5.8-1.9a2 2 0 0 0 1.3-1.3z',
+      'M5 3v4',
+      'M3 5h4',
+    ],
+  },
+  {
+    title: 'AI 工作流自动化',
+    desc: '表单、审批、数据处理接入大模型，减少重复劳动，让流程自动跑。',
+    paths: [
+      'M6 3v12',
+      'M18 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z',
+      'M6 21a3 3 0 1 0 0-6 3 3 0 0 0 0 6z',
+      'M18 9a9 9 0 0 1-9 9',
+    ],
+  },
+  {
+    title: '模型私有化部署',
+    desc: '把大模型部署在企业内网，数据不出门，兼顾安全与成本。',
+    paths: [
+      'M4 4h16v16H4z',
+      'M9 9h6v6H9z',
+      'M9 1v3',
+      'M15 1v3',
+      'M9 20v3',
+      'M15 20v3',
+    ],
   },
   {
     title: 'UI / UX 设计',
@@ -274,21 +314,37 @@ const services = [
       'M16 3.13a4 4 0 0 1 0 7.75',
     ],
   },
-  {
-    title: '技术咨询',
-    desc: '技术选型、架构评审与性能优化，帮助团队少走弯路。',
-    paths: [
-      'M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z',
-      'M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z',
-    ],
-  },
 ]
 
 const techGroups = [
   { name: '前端', items: ['Vue', 'React', 'TypeScript', 'HTML5 / CSS3'] },
   { name: '后端', items: ['Node.js', 'Java', 'Python', 'PHP', 'Go'] },
   { name: '移动端', items: ['微信小程序', 'uni-app', 'Flutter'] },
+  { name: 'AI', items: ['LLM', 'RAG', 'Coze / Dify', 'LangChain', 'Ollama'] },
   { name: '数据与云', items: ['MySQL', 'Redis', 'Docker', 'Nginx', '腾讯云'] },
+]
+
+const aiScenarios = [
+  {
+    tag: '客服',
+    title: '智能客服与知识库',
+    desc: '把产品手册、售后资料变成随时在线的回答，接入官网、公众号或企业微信。',
+  },
+  {
+    tag: '营销',
+    title: 'AI 内容生产',
+    desc: '商品图、营销文案、短视频批量生成，让内容团队把时间花在策略上。',
+  },
+  {
+    tag: '效率',
+    title: '工作流自动化',
+    desc: '表单、审批、报表接入大模型，重复流程自动处理，减少人工。',
+  },
+  {
+    tag: '安全',
+    title: '私有化部署',
+    desc: '模型部署在企业内网，敏感数据不出门，支持持续调优与维护。',
+  },
 ]
 
 const advantages = [
@@ -300,14 +356,6 @@ const advantages = [
 
 const icp = '冀ICP备2021003265号'
 const year = new Date().getFullYear()
-
-/* ---------- AI 客服 ---------- */
-// 填入 AI 客服平台的嵌入地址（Coze / FastGPT / Dify 的网页嵌入链接）
-const CHAT_EMBED_URL = ''
-const chatOpen = ref(false)
-const closeChat = () => {
-  chatOpen.value = false
-}
 
 /* ---------- 联系表单 ---------- */
 // 替换成你在 https://web3forms.com/ 用邮箱换到的 Access Key
@@ -395,8 +443,8 @@ async function submitForm() {
             <span class="gradient-text">让业务跑得更快</span>
           </h1>
           <p class="hero__desc hero__enter" style="--enter-delay: 180ms">
-            从企业官网到业务系统，从产品设计到云部署运维——
-            我们提供覆盖建站、开发与技术服务的全栈支持，把想法变成真正可用的产品。
+            从企业官网、业务系统到 AI 应用落地——
+            我们提供建站、开发、AI 与运维的全栈支持，把想法变成真正可用的产品。
           </p>
           <div class="hero__actions hero__enter" style="--enter-delay: 280ms">
             <a class="btn btn--primary" href="#services">查看业务范围</a>
@@ -487,8 +535,31 @@ async function submitForm() {
       </div>
     </section>
 
+    <!-- AI -->
+    <section id="ai" class="section">
+      <div class="container">
+        <div class="section__head reveal">
+          <p class="eyebrow">AI 落地</p>
+          <h2 class="section__title">AI 不只是概念，要能跑进业务里</h2>
+          <p class="section__lead">从知识库、内容生产到流程自动化，我们帮你把大模型接进真实场景。</p>
+        </div>
+        <div class="ai-grid">
+          <div
+            v-for="(a, i) in aiScenarios"
+            :key="a.title"
+            class="ai-card reveal"
+            :style="{ '--delay': i * 90 + 'ms' }"
+          >
+            <span class="ai-card__tag">{{ a.tag }}</span>
+            <h3>{{ a.title }}</h3>
+            <p>{{ a.desc }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Tech -->
-    <section id="tech" class="section">
+    <section id="tech" class="section section--soft">
       <div class="container">
         <div class="section__head reveal">
           <p class="eyebrow">技术能力</p>
@@ -512,7 +583,7 @@ async function submitForm() {
     </section>
 
     <!-- Why -->
-    <section id="why" class="section section--soft">
+    <section id="why" class="section">
       <div class="container">
         <div class="section__head reveal">
           <p class="eyebrow">为什么选择我们</p>
@@ -534,7 +605,7 @@ async function submitForm() {
     </section>
 
     <!-- Contact -->
-    <section id="contact" class="section">
+    <section id="contact" class="section section--soft">
       <div class="container contact">
         <div class="contact__copy reveal">
           <p class="eyebrow">联系我们</p>
@@ -608,58 +679,4 @@ async function submitForm() {
       <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">{{ icp }}</a>
     </div>
   </footer>
-
-  <!-- AI 客服 -->
-  <div class="chat" :class="{ 'chat--open': chatOpen }">
-    <transition name="chat-pop">
-      <div v-if="chatOpen" class="chat__panel">
-        <div class="chat__head">
-          <span>AI 客服</span>
-          <button type="button" aria-label="关闭" @click="closeChat">×</button>
-        </div>
-        <iframe
-          v-if="CHAT_EMBED_URL"
-          class="chat__frame"
-          :src="CHAT_EMBED_URL"
-          title="AI 客服"
-          allow="microphone"
-        ></iframe>
-        <div v-else class="chat__empty">
-          <p>AI 客服正在接入中</p>
-          <p>急事可以先<a href="#contact">填写联系表单</a></p>
-        </div>
-      </div>
-    </transition>
-
-    <button
-      class="chat__fab"
-      type="button"
-      :aria-label="chatOpen ? '关闭 AI 客服' : '打开 AI 客服'"
-      @click="chatOpen = !chatOpen"
-    >
-      <svg
-        v-if="!chatOpen"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="1.8"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      >
-        <path
-          d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"
-        />
-      </svg>
-      <svg
-        v-else
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-      >
-        <path d="M6 6l12 12M18 6L6 18" />
-      </svg>
-    </button>
-  </div>
 </template>

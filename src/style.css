@@ -737,7 +737,7 @@ ul {
 /* ---------- 技术能力 ---------- */
 .tech {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 20px;
 }
 
@@ -786,6 +786,53 @@ ul {
   border-color: var(--primary);
   color: #fff;
   box-shadow: 0 0 18px rgba(79, 140, 255, 0.35);
+}
+
+/* ---------- AI 落地 ---------- */
+.ai-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.ai-card {
+  position: relative;
+  overflow: hidden;
+  padding: 30px 24px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: linear-gradient(180deg, rgba(79, 140, 255, 0.07), rgba(124, 92, 255, 0.03));
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.ai-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(79, 140, 255, 0.4);
+  box-shadow: 0 22px 50px -26px rgba(124, 92, 255, 0.55);
+}
+
+.ai-card__tag {
+  display: inline-block;
+  margin-bottom: 16px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(79, 140, 255, 0.35);
+  color: #9cc0ff;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+}
+
+.ai-card h3 {
+  font-size: 17px;
+  margin-bottom: 10px;
+}
+
+.ai-card p {
+  color: var(--muted);
+  font-size: 14.5px;
 }
 
 /* ---------- 优势 ---------- */
@@ -935,116 +982,6 @@ ul {
   color: #ff7a7a;
 }
 
-/* ---------- AI 客服 ---------- */
-.chat {
-  position: fixed;
-  right: 24px;
-  bottom: 24px;
-  z-index: 90;
-}
-
-.chat__fab {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  border: 0;
-  cursor: pointer;
-  display: grid;
-  place-items: center;
-  color: #fff;
-  background: linear-gradient(135deg, var(--primary), var(--primary-2));
-  box-shadow: 0 14px 34px -10px rgba(79, 140, 255, 0.85);
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
-}
-
-.chat__fab:hover {
-  transform: translateY(-2px) scale(1.04);
-  box-shadow: 0 18px 40px -10px rgba(124, 92, 255, 0.9);
-}
-
-.chat__fab svg {
-  width: 26px;
-  height: 26px;
-}
-
-.chat__panel {
-  position: absolute;
-  right: 0;
-  bottom: 72px;
-  width: 380px;
-  height: 560px;
-  max-height: calc(100vh - 120px);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  border-radius: 16px;
-  border: 1px solid var(--border);
-  background: #0b1220;
-  box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.85);
-}
-
-.chat__head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--border);
-  font-size: 14px;
-  font-weight: 600;
-  flex: none;
-}
-
-.chat__head button {
-  background: none;
-  border: 0;
-  color: var(--muted);
-  font-size: 22px;
-  line-height: 1;
-  cursor: pointer;
-  padding: 0 4px;
-}
-
-.chat__head button:hover {
-  color: var(--text);
-}
-
-.chat__frame {
-  flex: 1;
-  width: 100%;
-  border: 0;
-  background: #fff;
-}
-
-.chat__empty {
-  flex: 1;
-  display: grid;
-  place-content: center;
-  gap: 10px;
-  padding: 24px;
-  text-align: center;
-  font-size: 14px;
-  color: var(--muted);
-}
-
-.chat__empty a {
-  color: var(--primary);
-}
-
-.chat-pop-enter-active,
-.chat-pop-leave-active {
-  transition:
-    opacity 0.2s ease,
-    transform 0.2s ease;
-}
-
-.chat-pop-enter-from,
-.chat-pop-leave-to {
-  opacity: 0;
-  transform: translateY(10px) scale(0.98);
-}
-
 /* ---------- 页脚 ---------- */
 .footer {
   border-top: 1px solid var(--border);
@@ -1094,6 +1031,10 @@ ul {
   }
 
   .tech {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .ai-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 
@@ -1152,6 +1093,7 @@ ul {
 
   .cards,
   .tech,
+  .ai-grid,
   .why {
     grid-template-columns: 1fr;
   }
@@ -1163,25 +1105,5 @@ ul {
   .footer__inner {
     flex-direction: column;
     align-items: flex-start;
-  }
-
-  .chat {
-    right: 16px;
-    bottom: 16px;
-  }
-
-  .chat__panel {
-    position: fixed;
-    inset: 0;
-    width: auto;
-    height: auto;
-    max-height: none;
-    border-radius: 0;
-    bottom: 0;
-    right: 0;
-  }
-
-  .chat--open .chat__fab {
-    display: none;
   }
 }

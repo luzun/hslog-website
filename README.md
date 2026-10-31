@@ -26,16 +26,19 @@ npm run preview
 - 访客提交后，内容会发到对应邮箱，免费额度每月 250 次
 - 域名白名单（Allowed Domains）是 Web3Forms 的 Pro 付费功能，免费版没有；若被滥用，可在后台重新生成 Key 再替换
 
-## AI 客服
+## SEO
 
-右下角悬浮聊天按钮，内容通过 iframe 嵌入第三方 AI 客服平台。
+已内置的基础 SEO：
 
-1. 在 Coze / FastGPT / Dify 建好知识库机器人
-2. 拿到网页嵌入链接
-3. 填到 `src/App.vue` 的 `CHAT_EMBED_URL`
-4. `git push` 后生效
+- `index.html` 里配置了 title、description、keywords、canonical、Open Graph、Twitter Card
+- 嵌入了 Organization 结构化数据（JSON-LD）
+- `public/robots.txt` 允许全站抓取并指向 sitemap
+- `public/sitemap.xml` 声明首页
 
-未填地址时，面板显示"AI 客服正在接入中"，并引导访客填写联系表单。
+上线后建议：
+
+1. 在 [Google Search Console](https://search.google.com/search-console) 和[百度搜索资源平台](https://ziyuan.baidu.com/) 提交 `https://www.hslog.cn/`，并验证 sitemap
+2. 后续如果需要更多收录，可以补一张 1200×630 的分享图（`og:image`），替换现在的 favicon 占位
 
 ## 需要替换的内容
 
@@ -44,7 +47,8 @@ npm run preview
 | 位置 | 当前值 | 说明 |
 |---|---|---|
 | `src/App.vue` → `company.intro` | 通用介绍文案 | 按公司实际情况调整 |
-| `src/App.vue` → `services` | 9 项业务 | 按实际业务增删 |
+| `src/App.vue` → `services` | 12 项业务 | 按实际业务增删 |
+| `src/App.vue` → `aiScenarios` | 4 个 AI 落地场景 | 按实际案例调整 |
 | `src/App.vue` → `techGroups` | 技术栈标签 | 按实际技术能力增删 |
 | `src/App.vue` → `icp` | `冀ICP备2021003265号` | 备案号，页脚展示 |
 | `public/CNAME` | `www.hslog.cn` | 自定义域名 |
