@@ -49,6 +49,20 @@ ul {
   margin-inline: auto;
 }
 
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  z-index: 100;
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+  background: linear-gradient(90deg, #4f8cff, #7c5cff 55%, #6ce0ff);
+  box-shadow: 0 0 12px rgba(79, 140, 255, 0.7);
+  pointer-events: none;
+}
+
 .gradient-text {
   background: linear-gradient(100deg, #7cb0ff 0%, #9b8cff 40%, #6ce0ff 70%, #7cb0ff 100%);
   background-size: 220% 220%;
@@ -127,6 +141,32 @@ ul {
   }
 }
 
+@keyframes enterUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes floatY {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.hero__enter {
+  animation: enterUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--enter-delay, 0ms);
+}
+
 .reveal {
   opacity: 0;
   transform: translateY(26px);
@@ -150,8 +190,14 @@ ul {
 
   .hero__glow,
   .hero__orb,
-  .gradient-text {
+  .gradient-text,
+  .hero__enter,
+  .hero__visual {
     animation: none;
+  }
+
+  .hero__canvas {
+    display: none;
   }
 }
 
@@ -371,6 +417,33 @@ ul {
   background-size: 64px 64px;
   mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000 30%, transparent 75%);
   pointer-events: none;
+  will-change: transform;
+}
+
+.hero__canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+.hero__cursor-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  background: radial-gradient(
+    460px circle at var(--mx, 50%) var(--my, 40%),
+    rgba(79, 140, 255, 0.13),
+    transparent 65%
+  );
+}
+
+.hero:hover .hero__cursor-glow {
+  opacity: 1;
 }
 
 .hero__inner {
@@ -434,6 +507,7 @@ ul {
 /* Hero 右侧代码卡片 */
 .hero__visual {
   position: relative;
+  animation: floatY 7s ease-in-out infinite;
 }
 
 .code-card {
@@ -585,6 +659,8 @@ ul {
 }
 
 .card {
+  position: relative;
+  overflow: hidden;
   padding: 30px 26px;
   border-radius: var(--radius);
   border: 1px solid var(--border);
@@ -594,6 +670,29 @@ ul {
     background 0.25s ease,
     border-color 0.25s ease,
     box-shadow 0.25s ease;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(
+    340px circle at var(--cx, 50%) var(--cy, 50%),
+    rgba(79, 140, 255, 0.16),
+    transparent 62%
+  );
+  transition: opacity 0.3s ease;
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+.card > * {
+  position: relative;
+  z-index: 1;
 }
 
 .card:hover {

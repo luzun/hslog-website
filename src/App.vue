@@ -8,33 +8,194 @@ const onScroll = () => {
   scrolled.value = window.scrollY > 24
 }
 
-let observer
+let revealObserver
+let rafId = 0
+let canvasCleanup = null
+let cardCleanup = null
+let heroCleanup = null
+
+/* ---------- 滚动进度条 ---------- */
+function initScrollProgress() {
+  const bar = document.querySelector('.scroll-progress')
+  const grid = document.querySelector('.hero__grid')
+  if (!bar) return
+  const update = () => {
+    const max = document.documentElement.scrollHeight - window.innerHeight
+    const p = max > 0 ? Math.min(window.scrollY / max, 1) : 0
+    bar.style.transform = `scaleX(${p})`
+    if (grid) grid.style.transform = `translateY(${window.scrollY * 0.18}px)`
+  }
+  update()
+  window.addEventListener('scroll', update, { passive: true })
+  window.addEventListener('resize', update)
+  return () => {
+    window.removeEventListener('scroll', update)
+    window.removeEventListener('resize', update)
+  }
+}
+
+/* ---------- 滚动渐显 ---------- */
+function initReveal() {
+  const reveals = document.querySelectorAll('.reveal')
+  if (!('IntersectionObserver' in window)) {
+    reveals.forEach((el) => el.classList.add('is-visible'))
+    return
+  }
+  revealObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible')
+          revealObserver.unobserve(entry.target)
+        }
+      })
+    },
+    { threshold: 0.12 },
+  )
+  reveals.forEach((el) => revealObserver.observe(el))
+}
+
+/* ---------- Hero 粒子网络 ---------- */
+function initParticles() {
+  const canvas = document.querySelector('.hero__canvas')
+  const host = canvas?.parentElement
+  if (!canvas || !host) return
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    canvas.style.display = 'none'
+    return
+  }
+
+  const ctx = canvas.getContext('2d')
+  let w = 0
+  let h = 0
+  let particles = []
+  const mouse = { x: -9999, y: -9999 }
+
+  const resize = () => {
+    const rect = host.getBoundingClientRect()
+    w = rect.width
+    h = rect.height
+    const dpr = Math.min(window.devicePixelRatio || 1, 2)
+    canvas.width = w * dpr
+    canvas.height = h * dpr
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+    const count = Math.min(90, Math.max(24, Math.floor(w / 16)))
+    particles = Array.from({ length: count }, () => ({
+      x: Math.random() * w,
+      y: Math.random() * h,
+      vx: (Math.random() - 0.5) * 0.35,
+      vy: (Math.random() - 0.5) * 0.35,
+      r: Math.random() * 1.5 + 0.6,
+    }))
+  }
+
+  const draw = () => {
+    ctx.clearRect(0, 0, w, h)
+    for (let i = 0; i < particles.length; i++) {
+      const p = particles[i]
+      p.x += p.vx
+      p.y += p.vy
+      if (p.x < 0 || p.x > w) p.vx *= -1
+      if (p.y < 0 || p.y > h) p.vy *= -1
+
+      const dx = p.x - mouse.x
+      const dy = p.y - mouse.y
+      const md = Math.hypot(dx, dy)
+      if (md < 130 && md > 0.1) {
+        p.x += (dx / md) * 0.7
+        p.y += (dy / md) * 0.7
+      }
+
+      ctx.beginPath()
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2)
+      ctx.fillStyle = 'rgba(130, 175, 255, 0.6)'
+      ctx.fill()
+
+      for (let j = i + 1; j < particles.length; j++) {
+        const q = particles[j]
+        const d = Math.hypot(p.x - q.x, p.y - q.y)
+        if (d < 120) {
+          ctx.beginPath()
+          ctx.moveTo(p.x, p.y)
+          ctx.lineTo(q.x, q.y)
+          ctx.strokeStyle = `rgba(100, 150, 255, ${0.2 * (1 - d / 120)})`
+          ctx.lineWidth = 1
+          ctx.stroke()
+        }
+      }
+    }
+    rafId = requestAnimationFrame(draw)
+  }
+
+  const onMove = (e) => {
+    const rect = canvas.getBoundingClientRect()
+    mouse.x = e.clientX - rect.left
+    mouse.y = e.clientY - rect.top
+  }
+  const onLeave = () => {
+    mouse.x = -9999
+    mouse.y = -9999
+  }
+
+  resize()
+  draw()
+  window.addEventListener('resize', resize)
+  host.addEventListener('mousemove', onMove, { passive: true })
+  host.addEventListener('mouseleave', onLeave)
+
+  canvasCleanup = () => {
+    cancelAnimationFrame(rafId)
+    window.removeEventListener('resize', resize)
+    host.removeEventListener('mousemove', onMove)
+    host.removeEventListener('mouseleave', onLeave)
+  }
+}
+
+/* ---------- Hero 鼠标光晕 ---------- */
+function initHeroGlow() {
+  const hero = document.querySelector('.hero')
+  if (!hero) return
+  const onMove = (e) => {
+    const rect = hero.getBoundingClientRect()
+    hero.style.setProperty('--mx', `${e.clientX - rect.left}px`)
+    hero.style.setProperty('--my', `${e.clientY - rect.top}px`)
+  }
+  hero.addEventListener('mousemove', onMove, { passive: true })
+  heroCleanup = () => hero.removeEventListener('mousemove', onMove)
+}
+
+/* ---------- 卡片光斑跟随 ---------- */
+function initCardGlow() {
+  const cards = document.querySelectorAll('.card')
+  if (!cards.length) return
+  const onMove = (e) => {
+    const card = e.currentTarget
+    const rect = card.getBoundingClientRect()
+    card.style.setProperty('--cx', `${e.clientX - rect.left}px`)
+    card.style.setProperty('--cy', `${e.clientY - rect.top}px`)
+  }
+  cards.forEach((card) => card.addEventListener('mousemove', onMove, { passive: true }))
+  cardCleanup = () => {
+    cards.forEach((card) => card.removeEventListener('mousemove', onMove))
+  }
+}
 
 onMounted(() => {
   window.addEventListener('scroll', onScroll, { passive: true })
-
-  const reveals = document.querySelectorAll('.reveal')
-  if ('IntersectionObserver' in window) {
-    observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('is-visible')
-            observer.unobserve(entry.target)
-          }
-        })
-      },
-      { threshold: 0.12 },
-    )
-    reveals.forEach((el) => observer.observe(el))
-  } else {
-    reveals.forEach((el) => el.classList.add('is-visible'))
-  }
+  initReveal()
+  initParticles()
+  initHeroGlow()
+  initCardGlow()
+  initScrollProgress()
+  onScroll()
 })
 
 onUnmounted(() => {
   window.removeEventListener('scroll', onScroll)
-  observer?.disconnect()
+  revealObserver?.disconnect()
+  canvasCleanup?.()
+  cardCleanup?.()
+  heroCleanup?.()
 })
 
 const company = {
@@ -141,6 +302,8 @@ const year = new Date().getFullYear()
 </script>
 
 <template>
+  <div class="scroll-progress" aria-hidden="true"></div>
+
   <header class="nav" :class="{ 'nav--solid': scrolled }">
     <div class="container nav__inner">
       <a class="brand" href="#top" @click="menuOpen = false">
@@ -176,22 +339,25 @@ const year = new Date().getFullYear()
       <div class="hero__orb hero__orb--1"></div>
       <div class="hero__orb hero__orb--2"></div>
       <div class="hero__grid"></div>
+      <canvas class="hero__canvas" aria-hidden="true"></canvas>
+      <div class="hero__cursor-glow" aria-hidden="true"></div>
+
       <div class="container hero__inner">
         <div class="hero__copy">
-          <p class="eyebrow">衡水洛格科技有限公司</p>
-          <h1 class="hero__title">
+          <p class="eyebrow hero__enter" style="--enter-delay: 0ms">衡水洛格科技有限公司</p>
+          <h1 class="hero__title hero__enter" style="--enter-delay: 80ms">
             软件定制 · 企业建站<br />
             <span class="gradient-text">让业务跑得更快</span>
           </h1>
-          <p class="hero__desc">
+          <p class="hero__desc hero__enter" style="--enter-delay: 180ms">
             从企业官网到业务系统，从产品设计到云部署运维——
             我们提供覆盖建站、开发与技术服务的全栈支持，把想法变成真正可用的产品。
           </p>
-          <div class="hero__actions">
+          <div class="hero__actions hero__enter" style="--enter-delay: 280ms">
             <a class="btn btn--primary" href="#services">查看业务范围</a>
             <a class="btn btn--ghost" href="#tech">了解技术能力</a>
           </div>
-          <ul class="hero__stats">
+          <ul class="hero__stats hero__enter" style="--enter-delay: 380ms">
             <li v-for="s in stats" :key="s.label">
               <strong>{{ s.value }}</strong>
               <span>{{ s.label }}</span>
