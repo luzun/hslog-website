@@ -24,11 +24,10 @@ npm run preview
 
 | 位置 | 当前值 | 说明 |
 |---|---|---|
-| `src/App.vue` → `contact.email` | `contact@hslog.cn` | 换成真实邮箱 |
-| `src/App.vue` → `contact.phone` | `400-000-0000` | 换成真实电话 |
-| `src/App.vue` → `contact.address` | `河北省衡水市` | 换成真实地址 |
 | `src/App.vue` → `company.intro` | 通用介绍文案 | 按公司实际情况调整 |
-| `src/App.vue` → `services` | 6 项业务 | 按实际业务增删 |
+| `src/App.vue` → `services` | 9 项业务 | 按实际业务增删 |
+| `src/App.vue` → `techGroups` | 技术栈标签 | 按实际技术能力增删 |
+| `src/App.vue` → `icp` | `冀ICP备2021003265号` | 备案号，页脚展示 |
 | `public/CNAME` | `www.hslog.cn` | 自定义域名 |
 
 ## 部署到 GitHub Pages

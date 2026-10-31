@@ -32,6 +32,7 @@ body {
     'Microsoft YaHei', 'Helvetica Neue', Arial, sans-serif;
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
 a {
@@ -49,10 +50,12 @@ ul {
 }
 
 .gradient-text {
-  background: linear-gradient(100deg, #7cb0ff 0%, #9b8cff 50%, #6ce0ff 100%);
+  background: linear-gradient(100deg, #7cb0ff 0%, #9b8cff 40%, #6ce0ff 70%, #7cb0ff 100%);
+  background-size: 220% 220%;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  animation: gradientMove 7s ease infinite;
 }
 
 .eyebrow {
@@ -91,8 +94,70 @@ ul {
   font-size: 16px;
 }
 
+/* ---------- 动画 ---------- */
+@keyframes gradientMove {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    opacity: 0.7;
+    transform: translateX(-50%) scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(-50%) scale(1.08);
+  }
+}
+
+@keyframes orbFloat {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(34px, -26px);
+  }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--delay, 0ms);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .hero__glow,
+  .hero__orb,
+  .gradient-text {
+    animation: none;
+  }
+}
+
 /* ---------- 按钮 ---------- */
 .btn {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -102,6 +167,7 @@ ul {
   font-size: 15px;
   font-weight: 600;
   border: 1px solid transparent;
+  overflow: hidden;
   transition:
     transform 0.2s ease,
     background 0.2s ease,
@@ -119,6 +185,24 @@ ul {
   box-shadow: 0 10px 30px -12px rgba(79, 140, 255, 0.8);
 }
 
+.btn--primary::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    110deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.28) 50%,
+    transparent 70%
+  );
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+
+.btn--primary:hover::after {
+  transform: translateX(100%);
+}
+
 .btn--primary:hover {
   box-shadow: 0 16px 38px -12px rgba(124, 92, 255, 0.9);
 }
@@ -132,11 +216,6 @@ ul {
 .btn--ghost:hover {
   border-color: rgba(255, 255, 255, 0.25);
   background: rgba(255, 255, 255, 0.06);
-}
-
-.btn--sm {
-  padding: 9px 18px;
-  font-size: 14px;
 }
 
 /* ---------- 导航 ---------- */
@@ -249,12 +328,38 @@ ul {
   height: 620px;
   background: radial-gradient(
     circle at 50% 40%,
-    rgba(79, 140, 255, 0.28),
-    rgba(124, 92, 255, 0.12) 42%,
+    rgba(79, 140, 255, 0.3),
+    rgba(124, 92, 255, 0.13) 42%,
     transparent 70%
   );
   filter: blur(20px);
   pointer-events: none;
+  animation: breathe 9s ease-in-out infinite;
+}
+
+.hero__orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+  pointer-events: none;
+  animation: orbFloat 13s ease-in-out infinite;
+}
+
+.hero__orb--1 {
+  width: 320px;
+  height: 320px;
+  top: 90px;
+  right: 7%;
+  background: rgba(79, 140, 255, 0.22);
+}
+
+.hero__orb--2 {
+  width: 260px;
+  height: 260px;
+  bottom: 60px;
+  right: 26%;
+  background: rgba(124, 92, 255, 0.18);
+  animation-delay: -5s;
 }
 
 .hero__grid {
@@ -283,7 +388,7 @@ ul {
 }
 
 .hero__title {
-  font-size: clamp(36px, 5.4vw, 64px);
+  font-size: clamp(34px, 5.2vw, 62px);
   line-height: 1.12;
   letter-spacing: -0.02em;
   margin-bottom: 22px;
@@ -292,7 +397,7 @@ ul {
 .hero__desc {
   color: var(--muted);
   font-size: 17px;
-  max-width: 520px;
+  max-width: 540px;
   margin-bottom: 34px;
 }
 
@@ -341,6 +446,16 @@ ul {
     0 0 0 1px rgba(255, 255, 255, 0.03);
   overflow: hidden;
   transform: perspective(1200px) rotateY(-6deg) rotateX(2deg);
+  transition:
+    transform 0.4s ease,
+    box-shadow 0.4s ease;
+}
+
+.code-card:hover {
+  transform: perspective(1200px) rotateY(0deg) rotateX(0deg) translateY(-4px);
+  box-shadow:
+    0 52px 100px -30px rgba(79, 140, 255, 0.35),
+    0 0 0 1px rgba(79, 140, 255, 0.25);
 }
 
 .code-card__bar {
@@ -448,6 +563,11 @@ ul {
   border-radius: 12px;
   background: var(--card);
   font-size: 15px;
+  transition: border-color 0.25s ease;
+}
+
+.about__points li:hover {
+  border-color: rgba(79, 140, 255, 0.35);
 }
 
 .about__points span {
@@ -472,13 +592,15 @@ ul {
   transition:
     transform 0.25s ease,
     background 0.25s ease,
-    border-color 0.25s ease;
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
 .card:hover {
   transform: translateY(-5px);
   background: var(--card-hover);
-  border-color: rgba(79, 140, 255, 0.35);
+  border-color: rgba(79, 140, 255, 0.4);
+  box-shadow: 0 22px 50px -26px rgba(79, 140, 255, 0.6);
 }
 
 .card__icon {
@@ -491,6 +613,11 @@ ul {
   color: #9cc0ff;
   background: linear-gradient(145deg, rgba(79, 140, 255, 0.18), rgba(124, 92, 255, 0.12));
   border: 1px solid rgba(79, 140, 255, 0.25);
+  transition: transform 0.25s ease;
+}
+
+.card:hover .card__icon {
+  transform: translateY(-2px) scale(1.06);
 }
 
 .card__icon svg {
@@ -506,6 +633,60 @@ ul {
 .card p {
   color: var(--muted);
   font-size: 14.5px;
+}
+
+/* ---------- 技术能力 ---------- */
+.tech {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.tech__group {
+  padding: 26px 22px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  transition:
+    border-color 0.25s ease,
+    background 0.25s ease;
+}
+
+.tech__group:hover {
+  border-color: rgba(79, 140, 255, 0.35);
+  background: var(--card-hover);
+}
+
+.tech__group h3 {
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  margin-bottom: 16px;
+}
+
+.tech__group ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tech__group li {
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  font-size: 13px;
+  color: #c9d6ea;
+  background: rgba(255, 255, 255, 0.03);
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.tech__group li:hover {
+  border-color: var(--primary);
+  color: #fff;
+  box-shadow: 0 0 18px rgba(79, 140, 255, 0.35);
 }
 
 /* ---------- 优势 ---------- */
@@ -541,51 +722,6 @@ ul {
 .why__item p {
   color: var(--muted);
   font-size: 14.5px;
-}
-
-/* ---------- 联系 ---------- */
-.contact {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 64px;
-  align-items: center;
-}
-
-.contact__copy .section__lead {
-  margin-bottom: 26px;
-}
-
-.contact__list {
-  display: grid;
-  gap: 0;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background: var(--card);
-  overflow: hidden;
-}
-
-.contact__list li {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  padding: 18px 24px;
-  border-bottom: 1px solid var(--border);
-  font-size: 15px;
-}
-
-.contact__list li:last-child {
-  border-bottom: 0;
-}
-
-.contact__label {
-  width: 56px;
-  flex: none;
-  color: var(--muted);
-  font-size: 13px;
-}
-
-.contact__list a:hover {
-  color: var(--primary);
 }
 
 /* ---------- 页脚 ---------- */
@@ -636,13 +772,12 @@ ul {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .why {
+  .tech {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .contact {
-    grid-template-columns: 1fr;
-    gap: 40px;
+  .why {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
@@ -685,15 +820,12 @@ ul {
     border-bottom: 0;
   }
 
-  .nav__cta {
-    display: none;
-  }
-
   .nav__toggle {
     display: flex;
   }
 
   .cards,
+  .tech,
   .why {
     grid-template-columns: 1fr;
   }
